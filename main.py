@@ -4,16 +4,19 @@ import argparse
 from grid import Grid, point_to_triangle, print_grid, triangle_to_vertices
 
 def main():
-    print("AMRAS Triangle Mapper Console App")
-    
-    ap = argparse.ArgumentParser(description="AMRAS Triangle Mapper Console App")
+    print("Triangle Mapper Console App")
+
+    ap = argparse.ArgumentParser(description="Triangle Mapper Console App")
     ap.add_argument('--rows', type=int, default=8, help='Number of grid rows (default: 8 for A..H)')
     ap.add_argument('--cols', type=int, default=8, help='Number of grid columns (default: 8 for 1..8)')
-    ap.add_argument('--w', type=float, default=50, help='Square width in pixels')
-    ap.add_argument('--h', type=float, default=40, help='Square height in pixels')
+    ap.add_argument('--w', type=float, default=50, help='Total grid width in pixels')
+    ap.add_argument('--h', type=float, default=40, help='Total grid height in pixels')
     args = ap.parse_args()
 
-    grid = Grid(rows=args.rows, cols=args.cols, w=args.w, h=args.h)
+    cell_w = args.w / args.cols
+    cell_h = args.h / args.rows
+
+    grid = Grid(rows=args.rows, cols=args.cols, w=args.w, h=args.h, cell_w=cell_w, cell_h=cell_h)
     print_grid(grid)
 
     while True:

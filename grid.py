@@ -7,12 +7,16 @@ class Grid:
     cols: int
     w: float
     h: float
+    cell_w: float
+    cell_h: float
 
 def print_grid(grid: Grid):
     print(f"Grid rows: {grid.rows}")
     print(f"Grid cols: {grid.cols}")
-    print(f"Square width: {grid.w} pixels")
-    print(f"Square height: {grid.h} pixels")
+    print(f"TOTAL width:  {grid.w} pixels")
+    print(f"TOTAL height: {grid.h} pixels")
+    print(f"Cell width:   {grid.cell_w} pixels")
+    print(f"Cell height:  {grid.cell_h} pixels")
 
 def row_letter(row_index: int) -> str:
     """0 -> 'A', 1 -> 'B', ... Supports up to 26 rows."""

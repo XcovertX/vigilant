@@ -32,7 +32,7 @@ class TestTLBRMapping(unittest.TestCase):
           Even/lower (A2): [(0,0), (0,100), (100,100)]
         """
         print("\n[TEST] A1/A2 vertices in 100x100 (TL→BR)")
-        cfg = Grid(rows=1, cols=1, w=100, h=100)
+        cfg = Grid(rows=1, cols=1, w=100, h=100, cell_w=100, cell_h=100)
 
         v1 = triangle_to_vertices(cfg, "A1")
         print_vertices_table("A1", v1)
@@ -53,7 +53,7 @@ class TestTLBRMapping(unittest.TestCase):
           B4 (even/lower): [(150,100), (150,200), (300,200)]
         """
         print("\n[TEST] B3/B4 vertices in 150x100 (TL→BR)")
-        cfg = Grid(rows=2, cols=2, w=150, h=100)
+        cfg = Grid(rows=2, cols=2, w=150, h=100, cell_w=75, cell_h=50)
 
         v_odd = triangle_to_vertices(cfg, "B3")
         print_vertices_table("B3", v_odd)
@@ -70,7 +70,7 @@ class TestTLBRMapping(unittest.TestCase):
         In 100x100, TL→BR: y < (h/w)*x → odd/upper; else even/lower.
         """
         print("\n[TEST] Point→Triangle in 100x100 (TL→BR)")
-        cfg = Grid(rows=2, cols=2, w=100, h=100)
+        cfg = Grid(rows=2, cols=2, w=100, h=100, cell_w=50, cell_h=50)
         cases = [
             ((10,   5), "A1"),   # col 1, row A, y=5 < (1)*10=10, above diagonal (odd)
             ((90,  90), "A2"),   # col 1, row A, y=90 = (1)*90=90, on diagonal → even/lower
@@ -92,7 +92,7 @@ class TestTLBRMapping(unittest.TestCase):
         In 150x100, TL→BR: slope = h/w = 2/3.
         """
         print("\n[TEST] Point→Triangle in 150x100 (TL→BR)")
-        cfg = Grid(rows=2, cols=2, w=150, h=100)
+        cfg = Grid(rows=2, cols=2, w=150, h=100, cell_w=75, cell_h=50)
         cases = [
             ((10,   5), "A1"),   # col 1, row A, y=5 < (2/3)*10≈6.7, above diagonal (odd)
             ((140, 90), "A1"),   # col 1, row A, y=90 < (2/3)*140≈93.3, above diagonal (odd)
@@ -115,7 +115,7 @@ class TestTLBRMapping(unittest.TestCase):
 
     def test_roundtrip_centroid_maps_back(self):
         print("\n[TEST] Centroid round-trip (TL→BR)")
-        cfg = Grid(rows=1, cols=2, w=150, h=100)
+        cfg = Grid(rows=1, cols=2, w=150, h=100, cell_w=75, cell_h=50)
         for desig in ("A1", "A2", "A3", "A4"):
             verts = triangle_to_vertices(cfg, desig)
             cx = sum(x for x, _ in verts) / 3.0
@@ -127,7 +127,7 @@ class TestTLBRMapping(unittest.TestCase):
 
     def test_on_diagonal_is_even(self):
         print("\n[TEST] On-diagonal rule → even/lower (TL→BR)")
-        cfg = Grid(rows=1, cols=1, w=100, h=100)
+        cfg = Grid(rows=1, cols=1, w=100, h=100, cell_w=100, cell_h=100)
         # On TL→BR diagonal: y = (h/w)*x
         self.assertEqual(point_to_triangle(cfg, 30, 30), "A2")
         self.assertEqual(point_to_triangle(cfg, 70, 70), "A2")
@@ -135,7 +135,7 @@ class TestTLBRMapping(unittest.TestCase):
 
     def test_out_of_bounds(self):
         print("\n[TEST] Out-of-bounds handling")
-        cfg = Grid(rows=1, cols=1, w=100, h=100)
+        cfg = Grid(rows=1, cols=1, w=100, h=100, cell_w=100, cell_h=100)
         with self.assertRaises(Exception):
             _ = point_to_triangle(cfg, -1, 0)
         with self.assertRaises(Exception):
