@@ -5,6 +5,7 @@ from grid import Grid, point_to_triangle, print_grid, triangle_to_vertices
 
 def main():
     print("AMRAS Triangle Mapper Console App")
+    
     ap = argparse.ArgumentParser(description="AMRAS Triangle Mapper Console App")
     ap.add_argument('--rows', type=int, default=8, help='Number of grid rows (default: 8 for A..H)')
     ap.add_argument('--cols', type=int, default=8, help='Number of grid columns (default: 8 for 1..8)')
