@@ -32,8 +32,8 @@ def point_to_triangle(cfg: Grid, x: float, y: float) -> str:
     y0 = row_idx * cfg.h       # top edge of the square
     xr = x - x0                # relative x
     yr = y - y0                # relative y
-    # Top Left -> Bottom Right diagonal: y = (h/w) * x
-    # If the point is ABOVE the TL->BR diagonal, it's the odd/upper triangle; else even/lower.
+# TR→BL diagonal in a cell: y = h - (h/w) * x
+# If the point is ABOVE the TR→BL diagonal, it's the odd/upper triangle; else even/lower.
     above = yr < (cfg.h - (cfg.h / cfg.w) * xr)
     tri_num = (2 * (col_idx + 1) - 1) if above else (2 * (col_idx + 1))
     return f"{row_letter(row_idx)}{tri_num}"
