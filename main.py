@@ -1,7 +1,7 @@
 from pdb import main
 import argparse
 
-from grid import Grid, print_grid
+from grid import Grid, point_to_triangle, print_grid
 
 def main():
     print("AMRAS Triangle Mapper Console App")
@@ -19,7 +19,14 @@ def main():
         print("Choose an option:\n  1) Point -> Triangle\n  2) Triangle -> Vertices\n  3) Quit")
         choice = input("> ").strip()
         if choice == '1':
-            print("point to tringle")
+            try:
+                raw = input("Enter x y: ").strip()
+                x_str, y_str = raw.split()
+                x, y = float(x_str), float(y_str)
+                desig = point_to_triangle(grid, x, y)
+                print(f"Triangle: {desig}\n")
+            except Exception as e:
+                print(f"Error: {e}\n")
         elif choice == '2':
             print("triangle to vertices")
         elif choice == '3':
