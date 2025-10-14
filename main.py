@@ -15,6 +15,16 @@ def main():
     grid = Grid(rows=args.rows, cols=args.cols, w=args.w, h=args.h)
     print_grid(grid)
 
+    while True:
+        print("Choose an option:\n  1) Point -> Triangle\n  2) Triangle -> Vertices\n  3) Quit")
+        choice = input("> ").strip()
+        if choice == '1':
+            print("point to tringle")
+        elif choice == '2':
+            print("triangle to vertices")
+        elif choice == '3':
+            print("Bye!")
+            break
 
 if __name__ == '__main__':
     main()
