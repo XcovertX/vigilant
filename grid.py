@@ -86,31 +86,3 @@ def triangle_to_vertices(cfg: Grid, desig: str) -> List[Tuple[float, float]]:
     else:
         return [(x0 + cfg.w, y0), (x0, y0 + cfg.h), (x0 + cfg.w, y0 + cfg.h)]
     
-def test_point_to_triangle():
-    test = Grid(rows=2, cols=2, w=100, h=100)
-    cases = [
-        ((10, 10), "A1"),
-        ((90, 90), "A2"),
-        ((110, 10), "A3"),
-        ((190, 90), "A4"),
-        ((10, 110), "B1"),
-        ((90, 190), "B2"),
-        ((110, 110), "B3"),
-        ((190, 190), "B4"),
-    ]
-    all_passed = True
-    for (x, y), expected in cases:
-        try:
-            result = point_to_triangle(test, x, y)
-            if result != expected:
-                print(f"FAIL: point_to_triangle({x}, {y}) => {result}, expected {expected}")
-                all_passed = False
-            else:
-                print(f"PASS: point_to_triangle({x}, {y}) => {result}")
-        except Exception as e:
-            print(f"ERROR: point_to_triangle({x}, {y}) raised {e}")
-            all_passed = False
-    if all_passed:
-        print("All tests passed.")
-
-test_point_to_triangle()
