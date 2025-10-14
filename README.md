@@ -24,11 +24,11 @@ The tool supports two complementary operations:
 ```
 Top-Left (x0, y0)
 +---------+
-| \       |   ← Odd / Upper (A1, A3, A5, …)
+| \       |   ← Odd / Lower (A1, A3, A5, …)
 |  \      |
 |   \     |   Diagonal: y = (h/w) * x
 |    \    |
-|     \   |   Even / Lower (A2, A4, A6, …)
+|     \   |   Even / Upper (A2, A4, A6, …)
 +---------+
 ```
 
@@ -37,7 +37,7 @@ Top-Left (x0, y0)
 ## Deterministic Mapping Rule
 To guarantee a unique mapping for every point:
 
-> If a point lies exactly on the diagonal (`y == (h/w) * x`), it is assigned to the **even/lower** triangle.
+> If a point lies exactly on the diagonal (`y == (h/w) * x`), it is assigned to the **even/upper** triangle.
 
 This ensures:
 - No overlap between triangles  
@@ -121,6 +121,7 @@ python -m unittest test.py -v
 ```
 
 
+
 ### What the Tests Cover
 - Triangle → Vertices correctness for both square and rectangular grids
 - Point → Triangle mapping for multiple rows/columns
@@ -135,14 +136,13 @@ python -m unittest test.py -v
 
 ```
 [TEST] Point→Triangle in 100x100 (TL→BR)
-✅ PASS: point_to_triangle(  10,   5) → A1 (expected A1)
+✅ PASS: point_to_triangle(  10,   5) → A2 (expected A2)
 ✅ PASS: point_to_triangle(  90,  90) → B4 (expected B4)
-✅ PASS: point_to_triangle(  60,   5) → A3 (expected A3)
+✅ PASS: point_to_triangle(  60,   5) → A4 (expected A4)
 ✅ PASS: point_to_triangle(  90,  40) → A4 (expected A4)
-✅ PASS: point_to_triangle(  10,  55) → B1 (expected B1)
+✅ PASS: point_to_triangle(  10,  55) → B2 (expected B2)
 ✅ PASS: point_to_triangle(  90,  90) → B4 (expected B4)
-✅ PASS: point_to_triangle(  60,  35) → A4 (expected A4)
-✅ PASS: point_to_triangle(  90,  90) → B4 (expected B4)
+✅ PASS: point_to_triangle(  60,  35) → A3 (expected A3)
 ✅ Points on the diagonal map to even/upper by convention
 ✅ Exceptions caught as expected
 ```
@@ -151,7 +151,7 @@ python -m unittest test.py -v
 
 ## Design Decisions
 - **Top-left → bottom-right (TL→BR)** diagonal orientation matches the geometry shown in the provided PDF.  
-- Deterministic **“on-diagonal → even/lower”** assignment ensures continuous coverage without overlap or ambiguity.  
+- Deterministic **“on-diagonal → even/upper”** assignment ensures continuous coverage without overlap or ambiguity.  
 - Logic generalizes to any rectangular grid (`w ≠ h`).  
 - Code is modular and extendable for visualization or alternate diagonal orientations.
 
