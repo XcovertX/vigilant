@@ -65,6 +65,7 @@ def is_odd_triangle(tri_num: int) -> bool:
     return (tri_num % 2) == 1
 
 def square_top_left(cfg: Grid, row_idx: int, square_col: int) -> Tuple[float, float]:
+    """Return the (x0,y0) coordinates of the top-left corner of the given square cell."""
     if not (0 <= row_idx < cfg.rows):
         raise ValueError("Row index out of bounds")
     if not (1 <= square_col <= cfg.cols):
