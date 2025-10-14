@@ -14,14 +14,6 @@ The tool supports two complementary operations:
 
 ---
 
-## Problem Context
-This project was developed as part of a technical assessment for Vigilant Cyber Systems. It demonstrates spatial reasoning and mapping logic that could be applied in projects like **AMRAS** (Automated Mission Readiness Assessment of Shipboard Systems), where large sets of subsystem data are normalized and mapped onto a structured grid or visualization.
-
-The original prompt required:  
-> “Create a console application that can (1) take pixel coordinates and resolve them to the correct triangle by row/column, and (2) for a letter-number triangle designator, produce its X & Y coordinates.”
-
----
-
 ## Coordinate System
 - The coordinate origin `(0,0)` is located at the **top-left** corner.  
 - Rows increase **downward** (`A`, `B`, `C`, …).  
