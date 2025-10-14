@@ -38,8 +38,8 @@ def point_to_triangle(grid: Grid, x: float, y: float) -> str:
     yr = y - y0                # relative y
     # Top Left -> Bottom Right diagonal in a cell: y = (h/w) * x
     # If the point is ABOVE the TL -> BR diagonal, it's the odd/upper triangle; else even/lower.
-    above = yr < (grid.cell_h / grid.cell_w) * xr
-    tri_num = (2 * (col_idx + 1) - 1) if above else (2 * (col_idx + 1))
+    lower = yr > (grid.cell_h / grid.cell_w) * xr
+    tri_num = (2 * (col_idx + 1) - 1) if lower else (2 * (col_idx + 1))
     return f"{row_letter(row_idx)}{tri_num}"
 
 def parse_designator(desig: str) -> Tuple[int, int]:
