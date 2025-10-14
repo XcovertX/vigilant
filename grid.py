@@ -27,11 +27,11 @@ def row_letter(row_index: int) -> str:
 def point_to_triangle(grid: Grid, x: float, y: float) -> str:
     """Given pixel coordinates (x,y), return triangle designator like 'A1'."""
     if x < 0 or y < 0:
-        raise ValueError("Coordinates must be non-negative and within the grid bounds.")
+        raise ValueError(f"Coordinates must be non-negative and within the grid bounds. {x}, {y} is invalid.")
     col_idx = int(x // grid.cell_w)  # figures out which column
     row_idx = int(y // grid.cell_h)  # figures out which row
     if col_idx >= grid.cols or row_idx >= grid.rows:
-        raise ValueError("Point is outside the grid.")
+        raise ValueError(f"Point is outside the grid. {x}, {y} exceeds grid bounds. Grid: {grid}")
     x0 = col_idx * grid.cell_w       # left edge of the square
     y0 = row_idx * grid.cell_h       # top edge of the square 
     xr = x - x0                # relative x
