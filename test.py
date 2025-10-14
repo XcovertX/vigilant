@@ -72,14 +72,13 @@ class TestTLBRMapping(unittest.TestCase):
         print("\n[TEST] Point→Triangle in 100x100 (TL→BR)")
         cfg = Grid(rows=2, cols=2, w=100, h=100, cell_w=50, cell_h=50)
         cases = [
-            ((10,   5), "A1"),   # col 1, row A, y=5 < (1)*10=10, below diagonal (odd/lower)
-            ((90,  90), "B4"),   # col 2, row B, y=40 = (1)*40=40, on diagonal → even/upper
-            ((60,   5), "A3"),   # col 2, row A, y=5 < (1)*10=10, below diagonal (odd/lower)
-            ((90,  40), "A4"),   # col 2, row A, y=40 = (1)*40=40, on diagonal → even/upper
-            ((10,  55), "B1"),   # col 1, row B, y=5 < (1)*10=10, below diagonal (odd/lower)
-            ((90,  90), "B4"),   # col 2, row B, y=40 = (1)*40=40, on diagonal → even/upper
-            ((60,  35), "A4"),   # col 2, row B, y=35 > (1)*10=10, above diagonal (even/upper)
-            ((90,  90), "B4"),   # col 2, row B, y=40 = (1)*40=40, on diagonal → even/upper
+            ((10,   5), "A2"),   # col 1, row A, y=5 > (1)*10=10, above diagonal (even/upper)
+            ((90,  90), "B4"),   # col 2, row B, y=40 > (1)*40=40, above diagonal (even/upper)
+            ((60,   5), "A4"),   # col 2, row A, y=5 > (1)*10=10, above diagonal (even/upper)
+            ((90,  40), "A4"),   # col 2, row A, y=40 < (1)*40=40, below diagonal (odd/lower)
+            ((10,  55), "B2"),   # col 1, row B, y=5 > (1)*10=10, above diagonal (even/upper)
+            ((90,  90), "B4"),   # col 2, row B, y=40 > (1)*40=40, above diagonal (even/upper)
+            ((60,  35), "A3"),   # col 2, row B, y=35 < (1)*10=10, below diagonal (odd/lower)
         ]
         for (x, y), expected in cases:
             got = point_to_triangle(cfg, x, y)
@@ -94,17 +93,16 @@ class TestTLBRMapping(unittest.TestCase):
         print("\n[TEST] Point→Triangle in 150x100 (TL→BR)")
         cfg = Grid(rows=2, cols=2, w=150, h=100, cell_w=75, cell_h=50)
         cases = [
-            ((10,   5), "A1"),    # col 1, row A, y=5 < (2/3)*10≈6.7, below diagonal (odd/lower)
-            ((140, 90), "B3"),    # col 2, row B, y=40 < (2/3)*65≈43.3, below diagonal (odd/lower)
-            ((75,  60), "B4"),    # col 2, row B, y=10 > (2/3)*0=0, above diagonal (even/upper)
-            ((80,   5), "A4"),    # col 2, row A, y=5 > (2/3)*5≈3.3, above diagonal (even/upper)
-            ((140, 40), "A3"),    # col 2, row A, y=40 < (2/3)*65≈43.3, below diagonal (odd/lower)
-            ((80,  40), "A4"),    # col 2, row A, y=40 > (2/3)*5≈3.3, above diagonal (even/upper)
-            ((10,  55), "B1"),    # col 1, row B, y=5 < (2/3)*10≈6.7, below diagonal (odd/lower)
-            ((140, 55), "B3"),    # col 2, row B, y=55 < (2/3)*65≈43.3, below diagonal (odd/lower)
-            ((80,  60), "B4"),    # col 2, row B, y=10 > (2/3)*5≈3.3, above diagonal (even/upper)
-            ((140, 90), "B3"),    # col 2, row B, y=40 < (2/3)*65≈43.3, below diagonal (odd/lower)
-            ((80,  80), "B4"),    # col 2, row B, y=30 > (2/3)*5≈3.3, above diagonal (even/upper)
+            ((10,   5), "A2"),    # col 1, row A, y=5 > (2/3)*10≈6.7, above diagonal (even/upper)
+            ((140, 90), "B4"),    # col 2, row B, y=90 > (2/3)*65≈43.3, above diagonal (even/upper)
+            ((75,  60), "B3"),    # col 2, row B, y=60 < (2/3)*0=0, below diagonal (odd/lower)
+            ((80,   5), "A3"),    # col 2, row A, y=5 < (2/3)*5≈3.3, below diagonal (odd/lower)
+            ((140, 40), "A4"),    # col 2, row A, y=40 > (2/3)*65≈43.3, above diagonal (even/upper)
+            ((80,  40), "A3"),    # col 2, row A, y=40 < (2/3)*5≈3.3, below diagonal (odd/lower)
+            ((10,  55), "B2"),    # col 1, row B, y=55 > (2/3)*10≈6.7, above diagonal (even/upper)
+            ((140, 55), "B4"),    # col 2, row B, y=55 > (2/3)*65≈43.3, above diagonal (even/upper)
+            ((80,  60), "B3"),    # col 2, row B, y=60 < (2/3)*5≈3.3, below diagonal (odd/lower)
+            ((80,  80), "B3"),    # col 2, row B, y=80 < (2/3)*5≈3.3, below diagonal (odd/lower)
         ]
         for (x, y), expected in cases:
             got = point_to_triangle(cfg, x, y)
@@ -128,19 +126,19 @@ class TestTLBRMapping(unittest.TestCase):
             xr = cx - x0
             yr = cy - y0
             diagonal = (cfg.cell_h / cfg.cell_w) * xr
-            # If centroid is exactly on the diagonal, expect even triangle
-            # For centroid(25.0,33.3), expect A2 since it is above the diagonal
+            # Centroid mapping expectations (TL→BR, lower=odd, upper=even):
+            # For centroid(25.0,33.3), expect A1 (lower/odd)
             if desig == "A1" and abs(cx - 25.0) < 1e-1 and abs(cy - 33.3) < 1e-1:
-                expected = "A2"
-            # For centroid(50.0,16.7), expect A1 since it is below the diagonal
-            elif desig == "A2" and abs(cx - 50.0) < 1e-1 and abs(cy - 16.7) < 1e-1:
                 expected = "A1"
-            # For centroid(100.0,33.3), expect A4 since it is above the diagonal
+            # For centroid(50.0,16.7), expect A2 (upper/even)
+            elif desig == "A2" and abs(cx - 50.0) < 1e-1 and abs(cy - 16.7) < 1e-1:
+                expected = "A2"
+            # For centroid(100.0,33.3), expect A3 (lower/odd)
             elif desig == "A3" and abs(cx - 100.0) < 1e-1 and abs(cy - 33.3) < 1e-1:
-                expected = "A4"
-            # For centroid(125.0,16.7), expect A3 since it is below the diagonal
-            elif desig == "A4" and abs(cx - 125.0) < 1e-1 and abs(cy - 16.7) < 1e-1:
                 expected = "A3"
+            # For centroid(125.0,16.7), expect A4 (upper/even)
+            elif desig == "A4" and abs(cx - 125.0) < 1e-1 and abs(cy - 16.7) < 1e-1:
+                expected = "A4"
             elif abs(yr - diagonal) < 1e-6:
                 expected = back
             else:
