@@ -8,7 +8,7 @@ class Grid:
     h: float
 
 def print_grid(grid: Grid):
-    for row in range(grid.rows):
-        for col in range(grid.cols):
-            print(f"({col * grid.w}, {row * grid.h})", end=" ")
-        print()
+    print(f"Grid rows: {grid.rows}")
+    print(f"Grid cols: {grid.cols}")
+    print(f"Square width: {grid.w} pixels")
+    print(f"Square height: {grid.h} pixels")

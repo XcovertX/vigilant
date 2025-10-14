@@ -1,6 +1,8 @@
 from pdb import main
 import argparse
 
+from grid import Grid, print_grid
+
 def main():
     print("AMRAS Triangle Mapper Console App")
     ap = argparse.ArgumentParser(description="AMRAS Triangle Mapper Console App")
@@ -9,10 +11,10 @@ def main():
     ap.add_argument('--w', type=float, default=50, help='Square width in pixels')
     ap.add_argument('--h', type=float, default=40, help='Square height in pixels')
     args = ap.parse_args()
-    print(f"Grid rows: {args.rows} (A..H)")
-    print(f"Grid cols: {args.cols} (1..8)")
-    print(f"Square width: {args.w} pixels")
-    print(f"Square height: {args.h} pixels")
+
+    grid = Grid(rows=args.rows, cols=args.cols, w=args.w, h=args.h)
+    print_grid(grid)
+
 
 if __name__ == '__main__':
     main()
