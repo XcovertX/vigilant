@@ -1,7 +1,7 @@
 from pdb import main
 import argparse
 
-from grid import Grid, point_to_triangle, print_grid
+from grid import Grid, point_to_triangle, print_grid, triangle_to_vertices
 
 def main():
     print("AMRAS Triangle Mapper Console App")
@@ -28,7 +28,15 @@ def main():
             except Exception as e:
                 print(f"Error: {e}\n")
         elif choice == '2':
-            print("triangle to vertices")
+            try:
+                desig = input("Enter triangle designator (e.g., A1): ").strip()
+                verts = triangle_to_vertices(grid, desig)
+                print("Vertices (x,y):")
+                for v in verts:
+                    print(f"  {v}")
+                print()
+            except Exception as e:
+                print(f"Error: {e}\n")
         elif choice == '3':
             print("Bye!")
             break
