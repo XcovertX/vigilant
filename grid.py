@@ -13,8 +13,8 @@ class Grid:
 def print_grid(grid: Grid):
     print(f"Grid rows: {grid.rows}")
     print(f"Grid cols: {grid.cols}")
-    print(f"TOTAL width:  {grid.w} pixels")
-    print(f"TOTAL height: {grid.h} pixels")
+    print(f"Total width:  {grid.w} pixels")
+    print(f"Total height: {grid.h} pixels")
     print(f"Cell width:   {grid.cell_w} pixels")
     print(f"Cell height:  {grid.cell_h} pixels")
 
@@ -24,21 +24,21 @@ def row_letter(row_index: int) -> str:
         raise ValueError("row_index out of range (0..25)")
     return chr(ord('A') + row_index)
 
-def point_to_triangle(cfg: Grid, x: float, y: float) -> str:
+def point_to_triangle(grid: Grid, x: float, y: float) -> str:
     """Given pixel coordinates (x,y), return triangle designator like 'A1'."""
     if x < 0 or y < 0:
         raise ValueError("Coordinates must be non-negative and within the grid bounds.")
-    col_idx = int(x // cfg.w)  # figures out which column
-    row_idx = int(y // cfg.h)  # figures out which row
-    if col_idx >= cfg.cols or row_idx >= cfg.rows:
+    col_idx = int(x // grid.cell_w)  # figures out which column
+    row_idx = int(y // grid.cell_h)  # figures out which row
+    if col_idx >= grid.cols or row_idx >= grid.rows:
         raise ValueError("Point is outside the grid.")
-    x0 = col_idx * cfg.w       # left edge of the square
-    y0 = row_idx * cfg.h       # top edge of the square
+    x0 = col_idx * grid.cell_w       # left edge of the square
+    y0 = row_idx * grid.cell_h       # top edge of the square 
     xr = x - x0                # relative x
     yr = y - y0                # relative y
-# Top Left -> Bottom Right diagonal in a cell: y = (h/w) * x
-# If the point is ABOVE the TL -> BR diagonal, it's the odd/upper triangle; else even/lower.
-    above = yr < (cfg.h / cfg.w) * xr
+    # Top Left -> Bottom Right diagonal in a cell: y = (h/w) * x
+    # If the point is ABOVE the TL -> BR diagonal, it's the odd/upper triangle; else even/lower.
+    above = yr < (grid.cell_h / grid.cell_w) * xr
     tri_num = (2 * (col_idx + 1) - 1) if above else (2 * (col_idx + 1))
     return f"{row_letter(row_idx)}{tri_num}"
 
@@ -68,25 +68,25 @@ def is_odd_triangle(tri_num: int) -> bool:
     """Return True if the triangle number is odd (upper triangle), else False (even, lower triangle)."""
     return (tri_num % 2) == 1
 
-def square_top_left(cfg: Grid, row_idx: int, square_col: int) -> Tuple[float, float]:
+def square_top_left(grid: Grid, row_idx: int, square_col: int) -> Tuple[float, float]:
     """Return the (x0,y0) coordinates of the top-left corner of the given square cell."""
-    if not (0 <= row_idx < cfg.rows):
+    if not (0 <= row_idx < grid.rows):
         raise ValueError("Row index out of bounds")
-    if not (1 <= square_col <= cfg.cols):
+    if not (1 <= square_col <= grid.cols):
         raise ValueError("Square column out of bounds")
-    x0 = (square_col - 1) * cfg.w
-    y0 = row_idx * cfg.h
+    x0 = (square_col - 1) * grid.cell_w
+    y0 = row_idx * grid.cell_h
     return x0, y0
 
-def triangle_to_vertices(cfg: Grid, desig: str) -> List[Tuple[float, float]]:
+def triangle_to_vertices(grid: Grid, desig: str) -> List[Tuple[float, float]]:
     """Given a triangle designator like 'A1', return list of its vertices [(x1,y1), (x2,y2), (x3,y3)]."""
     row_idx, tri_num = parse_designator(desig)
     square_col = square_col_from_tri(tri_num)
-    x0, y0 = square_top_left(cfg, row_idx, square_col)
+    x0, y0 = square_top_left(grid, row_idx, square_col)
 
-    # Odd = upper triangle (above TL->BR diagonal)
-    if is_odd_triangle(tri_num):
-        return [(x0, y0), (x0 + cfg.w, y0), (x0 + cfg.w, y0 + cfg.h)]
-    else:
-        return [(x0, y0), (x0, y0 + cfg.h), (x0 + cfg.w, y0 + cfg.h)]
-    
+    # Odd = lower triangle (below TL->BR diagonal)
+    if (tri_num % 2) == 1:
+        return [(x0, y0), (x0, y0 + grid.cell_h), (x0 + grid.cell_w, y0 + grid.cell_h)]
+    else:  # even/upper
+        return [(x0, y0), (x0 + grid.cell_w, y0), (x0 + grid.cell_w, y0 + grid.cell_h)]
+
